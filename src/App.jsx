@@ -1,25 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
-
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import List from './components/List';
+import Status from './components/Status';
 import './style.scss';
 
-const List = ({ items, itemClick }) => {
-  const listItems = items.map((item) => {
-    const onItemClick = e => itemClick(e, item);
-    const classes = classNames('list-group-item', 'list-group-item-action', {
-      active: item.selected,
-    });
-    return (<button key={item.id} onClick={onItemClick} className={classes}>{item.label}</button>);
-  });
-  return (<div className="list-group list-group-flush">{listItems}</div>);
-};
-
-List.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  itemClick: PropTypes.func.isRequired,
-};
 
 class App extends React.Component {
   constructor() {
@@ -64,7 +49,9 @@ class App extends React.Component {
             <button className="btn btn-primary" onClick={this.onSubmit}>Add</button>
           </div>
         </div>
-        <br />
+        <div className="row">
+          <div className="col-md-12"><Status items={this.state.items} /></div>
+        </div>
         <div className="row">
           <div className="col-md-12">
             <List items={this.state.items} itemClick={this.onListItemClick} />
