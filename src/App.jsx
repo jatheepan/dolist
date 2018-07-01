@@ -1,52 +1,78 @@
 import React from 'react';
-import { BrowserRouter, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './style.scss';
 
-import Routes from './Routes';
-
-const List = ({ items = [], itemClick }) => {
+const List = ({ items, itemClick }) => {
   const listItems = items.map((item) => {
     const onItemClick = e => itemClick(e, item);
-    return (<li key={item.id} onClick={onItemClick}>{item.label}</li>);
+    const classes = classNames('list-group-item', 'list-group-item-action', {
+      active: item.selected,
+    });
+    return (<button key={item.id} onClick={onItemClick} className={classes}>{item.label}</button>);
   });
-  return (<ul>{listItems}</ul>);
+  return (<div className="list-group list-group-flush">{listItems}</div>);
 };
 
 List.propTypes = {
-  items: PropTypes.array,
-  itemClick: PropTypes.func.isRequired
+  items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  itemClick: PropTypes.func.isRequired,
 };
 
-let items = [{
-  id: 1,
-  label: 'First Item'
-}, {
-  id: 2,
-  label: 'Second Item'
-}];
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      items: [],
+    };
+    this.newTaskRef = React.createRef();
+    this.onSubmit = this.onSubmitHandler.bind(this);
+    this.onListItemClick = this.onListItemClickHandler.bind(this);
+  }
 
-const onListItemClick = ( e, item ) => {
-  console.log( item );
-};
+  onSubmitHandler() {
+    const { items } = this.state;
+    const item = this.newTaskRef.current.value.trim();
+    if (item) {
+      items.push({
+        label: item,
+        done: false,
+        selected: false,
+        id: Date.now(),
+      });
+    }
+    this.setState({ items });
+  }
 
-const App = () => (
-  <BrowserRouter>
-    <main className="container">
-      <div className="row">
-        <div className="col-md-3">
-          <input ref="newTask" className="form-control" />
+  onListItemClickHandler(e, { id }) {
+    const item = this.state.items.find(i => i.id === id);
+    item.selected = !item.selected;
+    this.setState({
+      items: this.state.items,
+    });
+  }
+  render() {
+    return (
+      <main className="container">
+        <div className="row">
+          <div className="col-md-9">
+            <input ref={this.newTaskRef} className="form-control" />
+          </div>
+          <div className="col-md-3">
+            <button className="btn btn-primary" onClick={this.onSubmit}>Add</button>
+          </div>
         </div>
-        <div className="col-md-3">
-          <button className="btn btn-primary">Add</button>
+        <br />
+        <div className="row">
+          <div className="col-md-12">
+            <List items={this.state.items} itemClick={this.onListItemClick} />
+          </div>
         </div>
-      </div>
-      <List items={items} itemClick={onListItemClick} />
-      <Routes />
-    </main>
-  </BrowserRouter>
-);
+      </main>
+    );
+  }
+}
 
 export default App;
