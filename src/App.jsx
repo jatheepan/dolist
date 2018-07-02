@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import List from './components/List';
@@ -6,7 +6,7 @@ import Status from './components/Status';
 import './style.scss';
 
 
-class App extends React.Component {
+class App extends Component {
   constructor() {
     super();
     this.state = {
@@ -33,13 +33,12 @@ class App extends React.Component {
     this.newTaskRef.current.value = '';
   }
 
-  onKeyUpHandler(e) {
-    if (e.key === 'Enter') {
-      this.onSubmitHandler();
-    }
+  onKeyUpHandler({ key }) {
+    if (key === 'Enter') this.onSubmitHandler();
   }
 
   onListItemClickHandler(e, { id }) {
+    e.preventDefault();
     const item = this.state.items.find(i => i.id === id);
     item.selected = !item.selected;
     this.setState({
