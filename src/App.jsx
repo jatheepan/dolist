@@ -14,6 +14,7 @@ class App extends React.Component {
     };
     this.newTaskRef = React.createRef();
     this.onSubmit = this.onSubmitHandler.bind(this);
+    this.onKeyUp = this.onKeyUpHandler.bind(this);
     this.onListItemClick = this.onListItemClickHandler.bind(this);
   }
 
@@ -29,6 +30,13 @@ class App extends React.Component {
       });
     }
     this.setState({ items });
+    this.newTaskRef.current.value = '';
+  }
+
+  onKeyUpHandler(e) {
+    if (e.key === 'Enter') {
+      this.onSubmitHandler();
+    }
   }
 
   onListItemClickHandler(e, { id }) {
@@ -43,7 +51,7 @@ class App extends React.Component {
       <main className="container">
         <div className="row">
           <div className="col-md-9">
-            <input ref={this.newTaskRef} className="form-control" />
+            <input ref={this.newTaskRef} className="form-control" onKeyUp={this.onKeyUp} />
           </div>
           <div className="col-md-3">
             <button className="btn btn-primary" onClick={this.onSubmit}>Add</button>
