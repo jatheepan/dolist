@@ -37,10 +37,9 @@ class App extends Component {
     if (key === 'Enter') this.onSubmitHandler();
   }
 
-  onListItemClickHandler(e, { id }) {
-    e.preventDefault();
+  onListItemClickHandler({ id }, checked) {
     const item = this.state.items.find(i => i.id === id);
-    item.selected = !item.selected;
+    item.selected = checked;
     this.setState({
       items: this.state.items,
     });
@@ -49,10 +48,10 @@ class App extends Component {
     return (
       <main className="container">
         <div className="row">
-          <div className="col-md-9">
+          <div className="col-md-9 col-sm-9">
             <input ref={this.newTaskRef} className="form-control" onKeyUp={this.onKeyUp} />
           </div>
-          <div className="col-md-3">
+          <div className="col-md-3 col-sm-3">
             <button className="btn btn-primary" onClick={this.onSubmit}>Add</button>
           </div>
         </div>
@@ -61,7 +60,7 @@ class App extends Component {
         </div>
         <div className="row">
           <div className="col-md-12">
-            <List items={this.state.items} itemClick={this.onListItemClick} />
+            <List items={this.state.items} selectionChange={this.onListItemClick} />
           </div>
         </div>
       </main>
