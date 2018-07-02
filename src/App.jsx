@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import List from './components/List';
 import Status from './components/Status';
+import Toolbar from './components/Toolbar';
 import './style.scss';
 
 
@@ -15,7 +16,9 @@ class App extends Component {
     this.newTaskRef = React.createRef();
     this.onSubmit = this.onSubmitHandler.bind(this);
     this.onKeyUp = this.onKeyUpHandler.bind(this);
-    this.onListItemClick = this.onListItemClickHandler.bind(this);
+    this.onSelectionChange = this.onSelectionChangeHandler.bind(this);
+    this.onDeleteClick = this.onDeleteClickHandler.bind(this);
+    this.onEditClick = this.onEditClickHandler.bind(this);
   }
 
   onSubmitHandler() {
@@ -37,12 +40,25 @@ class App extends Component {
     if (key === 'Enter') this.onSubmitHandler();
   }
 
-  onListItemClickHandler({ id }, checked) {
+  onSelectionChangeHandler({ id }, checked) {
     const item = this.state.items.find(i => i.id === id);
     item.selected = checked;
     this.setState({
       items: this.state.items,
     });
+  }
+
+  onDeleteClickHandler() {
+    const { items } = this.state;
+    const unSelectedItems = items.filter(i => !i.selected);
+    // console.log(unSelectedItems);
+    this.setState({
+      items: unSelectedItems,
+    });
+  }
+
+  onEditClickHandler() {
+    console.log(this, 'edit');
   }
   render() {
     return (
@@ -56,11 +72,16 @@ class App extends Component {
           </div>
         </div>
         <div className="row">
+          <div className="col-md-12">
+            <Toolbar onDeleteClick={this.onDeleteClick} onEditClick={this.onEditClick} />
+          </div>
+        </div>
+        <div className="row">
           <div className="col-md-12"><Status items={this.state.items} /></div>
         </div>
         <div className="row">
           <div className="col-md-12">
-            <List items={this.state.items} selectionChange={this.onListItemClick} />
+            <List items={this.state.items} onSelectionChange={this.onSelectionChange} />
           </div>
         </div>
       </main>

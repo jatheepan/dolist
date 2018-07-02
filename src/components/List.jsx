@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-const List = ({ items, selectionChange }) => {
+const List = ({ items, onSelectionChange }) => {
   const listItems = items.map((item) => {
     const classes = classNames('list-group-item', 'list-group-item-action', {
       active: item.selected,
     });
     let inputCheckbox = null;
     const onChange = () => {
-      selectionChange(item, inputCheckbox.checked);
+      onSelectionChange(item, inputCheckbox.checked);
     };
     return (
       <li key={item.id} className={classes}>
@@ -29,7 +29,7 @@ const List = ({ items, selectionChange }) => {
 
 List.propTypes = {
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
-  selectionChange: PropTypes.func.isRequired,
+  onSelectionChange: PropTypes.func.isRequired,
 };
 
 export default List;
