@@ -1,39 +1,30 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import { addAction, selectionChangeAction } from './actions';
 import List from './components/List';
 import Status from './components/Status';
 import Toolbar from './components/Toolbar';
 import './style.scss';
 
-
-class App extends Component {
+class AppInside extends Component {
   constructor() {
     super();
-    this.state = {
-      items: [],
-    };
     this.newTaskRef = React.createRef();
     this.onSubmit = this.onSubmitHandler.bind(this);
     this.onKeyUp = this.onKeyUpHandler.bind(this);
     this.onSelectionChange = this.onSelectionChangeHandler.bind(this);
     this.onDeleteClick = this.onDeleteClickHandler.bind(this);
-    this.onEditClick = this.onEditClickHandler.bind(this);
   }
 
   onSubmitHandler() {
-    const { items } = this.state;
     const item = this.newTaskRef.current.value.trim();
     if (item) {
-      items.push({
-        label: item,
-        done: false,
-        selected: false,
-        id: Date.now(),
-      });
+      this.props.onSubmit(item);
+      this.newTaskRef.current.value = '';
     }
-    this.setState({ items });
-    this.newTaskRef.current.value = '';
   }
 
   onKeyUpHandler({ key }) {
@@ -41,26 +32,19 @@ class App extends Component {
   }
 
   onSelectionChangeHandler({ id }, checked) {
-    const item = this.state.items.find(i => i.id === id);
-    item.selected = checked;
-    this.setState({
-      items: this.state.items,
-    });
+    this.props.onSelectionChange(id, checked);
   }
 
   onDeleteClickHandler() {
     const { items } = this.state;
     const unSelectedItems = items.filter(i => !i.selected);
-    // console.log(unSelectedItems);
     this.setState({
       items: unSelectedItems,
     });
   }
 
-  onEditClickHandler() {
-    console.log(this, 'edit');
-  }
   render() {
+    const { items } = this.props;
     return (
       <main className="container">
         <div className="row">
@@ -73,20 +57,41 @@ class App extends Component {
         </div>
         <div className="row">
           <div className="col-md-12">
-            <Toolbar onDeleteClick={this.onDeleteClick} onEditClick={this.onEditClick} />
+            <Toolbar onDeleteClick={this.onDeleteClick} />
           </div>
         </div>
         <div className="row">
-          <div className="col-md-12"><Status items={this.state.items} /></div>
+          <div className="col-md-12"><Status items={items} /></div>
         </div>
         <div className="row">
           <div className="col-md-12">
-            <List items={this.state.items} onSelectionChange={this.onSelectionChange} />
+            <List items={items} onSelectionChange={this.onSelectionChange} />
           </div>
         </div>
       </main>
     );
   }
 }
+
+AppInside.propTypes = {
+  items: PropTypes.arrayOf(PropTypes.any).isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  onSelectionChange: PropTypes.func.isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    items: state.items,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    onSubmit: value => dispatch(addAction(value)),
+    onSelectionChange: (id, checked) => dispatch(selectionChangeAction(id, checked)),
+  };
+}
+
+const App = connect(mapStateToProps, mapDispatchToProps)(AppInside);
 
 export default App;

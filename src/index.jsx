@@ -11,14 +11,21 @@ import ReactDOM from 'react-dom';
 // hot reload for development
 import { AppContainer } from 'react-hot-loader';
 
-import App from './App';
+import { createStore, applyMiddleware } from 'redux';
+import { Provider } from 'react-redux';
 
+import App from './App';
+import reducer from './reducer';
+
+const store = createStore(reducer, {}, applyMiddleware());
 const root = document.getElementById('root');
 
 const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
-      <Component />
+      <Provider store={store}>
+        <Component />
+      </Provider>
     </AppContainer>,
     root,
   );
