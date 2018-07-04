@@ -53,7 +53,7 @@ class AppInside extends Component {
         </div>
         <div className="row">
           <div className="col-md-12">
-            <Toolbar onDeleteClick={this.onDeleteClick} />
+            <Toolbar items={items} onDeleteClick={this.onDeleteClick} />
           </div>
         </div>
         <div className="row">
