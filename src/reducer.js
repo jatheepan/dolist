@@ -25,6 +25,14 @@ export default function (_state = defaultState, action) {
       state.items = state.items.filter(i => !i.selected);
       return state;
     }
+    case 'COMPLETE_ITEMS': {
+      state.items.forEach((i) => {
+        if (i.selected) {
+          i.done = true;
+        }
+      });
+      return state;
+    }
     default:
       state.items = [];
       return state;

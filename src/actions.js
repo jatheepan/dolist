@@ -13,6 +13,10 @@ const deleteItemsAction = {
   type: 'DELETE_ITEMS',
 };
 
+const completeItemsAction = {
+  type: 'COMPLETE_ITEMS',
+};
+
 const selectionChangeAction = (id, checked) => ({
   type: 'SELECTION_CHANGE_ITEM',
   payload: {
@@ -21,4 +25,4 @@ const selectionChangeAction = (id, checked) => ({
   },
 });
 
-export { addAction, resetAction, selectionChangeAction, deleteItemsAction };
+export { addAction, resetAction, selectionChangeAction, deleteItemsAction, completeItemsAction };

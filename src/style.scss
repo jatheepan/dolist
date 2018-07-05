@@ -11,6 +11,12 @@ main.container {
   label {
     margin-bottom: 0;
   }
+  input[type=checkbox] {
+    margin-right: 10px;
+  }
+  .completed {
+    color: #83ca48;
+  }
 }
 
 .Toolbar {

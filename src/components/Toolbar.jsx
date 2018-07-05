@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
-export default function Toolbar({ items, onDeleteClick }) {
+export default function Toolbar({ items, onDeleteClick, onCompleteClick }) {
   const hasSelection = !!(items.find(item => item.selected));
   const btnClasses = classNames('btn', 'btn-secondary', 'btn-sm');
   return (
@@ -14,12 +14,19 @@ export default function Toolbar({ items, onDeleteClick }) {
           disabled={!hasSelection}
         >Delete
         </button>
+        <button
+          className={btnClasses}
+          onClick={onCompleteClick}
+          disabled={!hasSelection}
+        >Complete
+        </button>
       </div>
     </div>
   );
 }
 
 Toolbar.propTypes = {
-  onDeleteClick: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
+  onCompleteClick: PropTypes.func.isRequired,
 };

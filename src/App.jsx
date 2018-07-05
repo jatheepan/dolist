@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { addAction, selectionChangeAction, deleteItemsAction } from './actions';
+import { addAction, selectionChangeAction, deleteItemsAction, completeItemsAction } from './actions';
 import List from './components/List';
 import Status from './components/Status';
 import Toolbar from './components/Toolbar';
@@ -17,8 +17,8 @@ class AppInside extends Component {
     this.onKeyUp = this.onKeyUpHandler.bind(this);
     this.onSelectionChange = this.onSelectionChangeHandler.bind(this);
     this.onDeleteClick = this.onDeleteClickHandler.bind(this);
+    this.onCompleteClick = this.onCompleteClickHandler.bind(this);
   }
-
   onSubmitHandler() {
     const item = this.newTaskRef.current.value.trim();
     if (item) {
@@ -26,19 +26,18 @@ class AppInside extends Component {
       this.newTaskRef.current.value = '';
     }
   }
-
   onKeyUpHandler({ key }) {
     if (key === 'Enter') this.onSubmitHandler();
   }
-
   onSelectionChangeHandler({ id }, checked) {
     this.props.onSelectionChange(id, checked);
   }
-
   onDeleteClickHandler() {
     this.props.onDeleteItems();
   }
-
+  onCompleteClickHandler() {
+    this.props.onCompleteItems();
+  }
   render() {
     const { items } = this.props;
     return (
@@ -53,7 +52,11 @@ class AppInside extends Component {
         </div>
         <div className="row">
           <div className="col-md-12">
-            <Toolbar items={items} onDeleteClick={this.onDeleteClick} />
+            <Toolbar
+              items={items}
+              onDeleteClick={this.onDeleteClick}
+              onCompleteClick={this.onCompleteClick}
+            />
           </div>
         </div>
         <div className="row">
@@ -74,6 +77,7 @@ AppInside.propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onSelectionChange: PropTypes.func.isRequired,
   onDeleteItems: PropTypes.func.isRequired,
+  onCompleteItems: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -87,6 +91,7 @@ function mapDispatchToProps(dispatch) {
     onSubmit: value => dispatch(addAction(value)),
     onSelectionChange: (id, checked) => dispatch(selectionChangeAction(id, checked)),
     onDeleteItems: () => dispatch(deleteItemsAction),
+    onCompleteItems: () => dispatch(completeItemsAction),
   };
 }
 
