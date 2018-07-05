@@ -51,15 +51,20 @@ const List = ({ items, onSelectionChange }) => {
   };
   return (
     <div className="List">
-      <input
-        type="checkbox"
-        checked={selectAllChecked}
-        id="selectAll"
-        ref={(input) => { selectAllCheckbox = input; }}
-        onChange={onSelectAllChange}
-      />
-      <label htmlFor="selectAll">Select all</label>
-      <ul className="list-group list-group-flush">{listItems}</ul>
+      <div className={classNames({ 'd-none': !items.length })}>
+        <input
+          type="checkbox"
+          checked={selectAllChecked}
+          id="selectAll"
+          ref={(input) => { selectAllCheckbox = input; }}
+          onChange={onSelectAllChange}
+        />
+        <label htmlFor="selectAll">Select all</label>
+        <ul className="list-group list-group-flush">{listItems}</ul>
+      </div>
+      <div className={classNames('no-data', { 'd-none': items.length })}>
+        No items in your list
+      </div>
     </div>
   );
 };

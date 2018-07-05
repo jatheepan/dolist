@@ -17,6 +17,10 @@ main.container {
   .completed {
     color: #83ca48;
   }
+  .no-data {
+    padding: 30px 10px;
+    color: gray;
+  }
 }
 
 .Toolbar {
