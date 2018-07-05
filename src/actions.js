@@ -5,7 +5,7 @@ const addAction = value => ({
   },
 });
 
-const resetAction = {
+const resetItemsAction = {
   type: 'RESET_ITEMS',
 };
 
@@ -25,4 +25,10 @@ const selectionChangeAction = (id, checked) => ({
   },
 });
 
-export { addAction, resetAction, selectionChangeAction, deleteItemsAction, completeItemsAction };
+export {
+  addAction,
+  resetItemsAction,
+  selectionChangeAction,
+  deleteItemsAction,
+  completeItemsAction,
+};

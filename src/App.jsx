@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { addAction, selectionChangeAction, deleteItemsAction, completeItemsAction } from './actions';
+import { addAction, selectionChangeAction, deleteItemsAction, completeItemsAction, resetItemsAction } from './actions';
 import List from './components/List';
 import Status from './components/Status';
 import Toolbar from './components/Toolbar';
@@ -18,6 +18,7 @@ class AppInside extends Component {
     this.onSelectionChange = this.onSelectionChangeHandler.bind(this);
     this.onDeleteClick = this.onDeleteClickHandler.bind(this);
     this.onCompleteClick = this.onCompleteClickHandler.bind(this);
+    this.onResetClick = this.onResetClickHandler.bind(this);
   }
   onSubmitHandler() {
     const item = this.newTaskRef.current.value.trim();
@@ -38,6 +39,9 @@ class AppInside extends Component {
   onCompleteClickHandler() {
     this.props.onCompleteItems();
   }
+  onResetClickHandler() {
+    this.props.onResetItems();
+  }
   render() {
     const { items } = this.props;
     return (
@@ -56,6 +60,7 @@ class AppInside extends Component {
               items={items}
               onDeleteClick={this.onDeleteClick}
               onCompleteClick={this.onCompleteClick}
+              onResetClick={this.onResetClick}
             />
           </div>
         </div>
@@ -78,6 +83,7 @@ AppInside.propTypes = {
   onSelectionChange: PropTypes.func.isRequired,
   onDeleteItems: PropTypes.func.isRequired,
   onCompleteItems: PropTypes.func.isRequired,
+  onResetItems: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -92,6 +98,7 @@ function mapDispatchToProps(dispatch) {
     onSelectionChange: (id, checked) => dispatch(selectionChangeAction(id, checked)),
     onDeleteItems: () => dispatch(deleteItemsAction),
     onCompleteItems: () => dispatch(completeItemsAction),
+    onResetItems: () => dispatch(resetItemsAction),
   };
 }
 
