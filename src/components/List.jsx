@@ -26,9 +26,15 @@ Item.propTypes = {
 };
 
 const List = ({ items, onSelectionChange }) => {
-  const listItems = items.map(item => (
-    <Item key={item.id} item={item} onSelectionChange={onSelectionChange} />
-  ));
+  const listItems = items.map((item) => {
+    const onChange = (_item, _checked) => {
+      onSelectionChange([{
+        id: _item.id,
+        checked: _checked,
+      }]);
+    };
+    return (<Item key={item.id} item={item} onSelectionChange={onChange} />);
+  });
   return (
     <div className="List">
       <ul className="list-group list-group-flush">{listItems}</ul>

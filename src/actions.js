@@ -17,11 +17,10 @@ const completeItemsAction = {
   type: 'COMPLETE_ITEMS',
 };
 
-const selectionChangeAction = (id, checked) => ({
+const selectionChangeAction = changedItems => ({
   type: 'SELECTION_CHANGE_ITEM',
   payload: {
-    id,
-    checked,
+    changedItems,
   },
 });
 

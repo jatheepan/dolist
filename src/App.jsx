@@ -30,8 +30,8 @@ class AppInside extends Component {
   onKeyUpHandler({ key }) {
     if (key === 'Enter') this.onSubmitHandler();
   }
-  onSelectionChangeHandler({ id }, checked) {
-    this.props.onSelectionChange(id, checked);
+  onSelectionChangeHandler(selectedItems) {
+    this.props.onSelectionChange(selectedItems);
   }
   onDeleteClickHandler() {
     this.props.onDeleteItems();
@@ -95,7 +95,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return {
     onSubmit: value => dispatch(addAction(value)),
-    onSelectionChange: (id, checked) => dispatch(selectionChangeAction(id, checked)),
+    onSelectionChange: changedItems => dispatch(selectionChangeAction(changedItems)),
     onDeleteItems: () => dispatch(deleteItemsAction),
     onCompleteItems: () => dispatch(completeItemsAction),
     onResetItems: () => dispatch(resetItemsAction),

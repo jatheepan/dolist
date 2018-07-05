@@ -16,9 +16,10 @@ export default function (_state = defaultState, action) {
       state.items = [];
       return state;
     case 'SELECTION_CHANGE_ITEM': {
-      const { id, checked } = action.payload;
-      const item = state.items.find(i => i.id === id);
-      item.selected = checked;
+      action.payload.changedItems.forEach(({ id, checked }) => {
+        const item = state.items.find(i => i.id === id);
+        item.selected = checked;
+      });
       return state;
     }
     case 'DELETE_ITEMS': {
