@@ -46,6 +46,7 @@ class AppInside extends Component {
     const { items } = this.props;
     return (
       <main className="container">
+        <h1>DoList</h1>
         <div className="row">
           <div className="col-md-9 col-sm-9">
             <input ref={this.newTaskRef} className="form-control" onKeyUp={this.onKeyUp} />

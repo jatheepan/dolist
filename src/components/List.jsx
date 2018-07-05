@@ -33,9 +33,9 @@ Item.propTypes = {
 
 const List = ({ items, onSelectionChange }) => {
   let selectAllCheckbox = null;
+  const selectAllChecked = (items.length && items.every(i => i.selected)) || false;
   const listItems = items.map((item) => {
     const onChange = (_item, _checked) => {
-      selectAllCheckbox.checked = false;
       onSelectionChange([{
         id: _item.id,
         checked: _checked,
@@ -51,7 +51,13 @@ const List = ({ items, onSelectionChange }) => {
   };
   return (
     <div className="List">
-      <input type="checkbox" id="selectAll" ref={(input) => { selectAllCheckbox = input; }} onChange={onSelectAllChange} />
+      <input
+        type="checkbox"
+        checked={selectAllChecked}
+        id="selectAll"
+        ref={(input) => { selectAllCheckbox = input; }}
+        onChange={onSelectAllChange}
+      />
       <label htmlFor="selectAll">Select all</label>
       <ul className="list-group list-group-flush">{listItems}</ul>
     </div>
